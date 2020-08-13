@@ -1,7 +1,6 @@
 import tkinter as tk
 import random
 
-#Function to swap two bars that will be animated
 def swap(pos_0, pos_1):
     bar11, _, bar12, _ = canvas.coords(pos_0)
     bar21, _, bar22, _ = canvas.coords(pos_1)
@@ -10,7 +9,6 @@ def swap(pos_0, pos_1):
 
 worker = None 
 
-#Insertion Sort
 def _insertion_sort():
     global barList
     global lengthList
@@ -31,8 +29,6 @@ def _insertion_sort():
         barList[pos] = cursorBar
         swap(barList[pos],cursorBar)
 
-
-#Bubble Sort
 def _bubble_sort():
     global barList
     global lengthList
@@ -45,8 +41,6 @@ def _bubble_sort():
                 swap(barList[j + 1] , barList[j])
                 yield        
            
-
-#Selection Sort            
 def _selection_sort():
     global barList    
     global lengthList
@@ -61,14 +55,18 @@ def _selection_sort():
         swap(barList[min] , barList[i])        
         yield
 
-
-#Triggering Fuctions
-
 def insertion_sort():     
     global worker
     worker = _insertion_sort()
     animate()
-
+def merge_sort():     
+    global worker
+    worker = _merge_sort()
+    animate()
+def quick_sort():     
+    global worker
+    worker = _quick_sort()
+    animate()
 def selection_sort():     
     global worker
     worker = _selection_sort()
@@ -79,7 +77,6 @@ def bubble_sort():
     worker = _bubble_sort()
     animate()    
 
-#Animation Function
 def animate():      
     global worker
     if worker is not None:
@@ -91,8 +88,6 @@ def animate():
         finally:
             window.after_cancel(animate) 
 
-
-#Generator function for generating data
 def generate():
     global barList
     global lengthList
@@ -102,7 +97,6 @@ def generate():
     barList = []
     lengthList = []
 
-    #Creating a rectangle
     for bar in range(1, 60):
         randomY = random.randint(1, 360)
         bar = canvas.create_rectangle(barstart, randomY, barend, 365, fill='blue')
@@ -110,39 +104,36 @@ def generate():
         barstart += 10
         barend += 10
 
-    #Getting length of the bar and appending into length list
     for bar in barList:
         bar = canvas.coords(bar)
         length = bar[3] - bar[1]
         lengthList.append(length)
 
-    #Maximum is colored Red
-    #Minimum is colored Black
     for i in range(len(lengthList)-1):
         if lengthList[i] == min(lengthList):
             canvas.itemconfig(barList[i], fill='red')
         elif lengthList[i] == max(lengthList):
             canvas.itemconfig(barList[i], fill='black')
 
-
-
-#Making a window using the Tk widget
 window = tk.Tk()
 window.title('Sorting Visualizer')
 window.geometry('600x450')
 
-#Making a Canvas within the window to display contents
 canvas = tk.Canvas(window, width='600', height='400')
 canvas.grid(column=0,row=0, columnspan = 50)
 
-#Buttons
 insert = tk.Button(window, text='Insertion Sort', command=insertion_sort)
 select = tk.Button(window, text='Selection Sort', command=selection_sort)
 bubble = tk.Button(window, text='Bubble Sort', command=bubble_sort)
 shuf = tk.Button(window, text='Shuffle', command=generate)
+merge = tk.Button(window, text='Merge Sort', command=generate)
+quick = tk.Button(window, text='Quick Sort', command=generate)
+
 insert.grid(column=1,row=1)
 select.grid(column=2,row=1)
 bubble.grid(column=3,row=1)
+merge.grid(column=4,row=1)
+quick.grid(column=5,row=1)
 shuf.grid(column=0, row=1)
 
 generate()
