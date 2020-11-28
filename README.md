@@ -1,5 +1,13 @@
 # SortingVisualizer
 
+This is a Simple GUI based python program to visualize common Sorting Algorithms Uses the tinkter Library in python
+
+- Created a new window using the Tk window object
+- Created a Canvas on the window and buttons with required commands
+- Randomized Data Generator function to add bars using canvas.create_rectangle() function
+- Swaps in the algorithms were animated using the window.after() function
+
+Currently **Insertion Sort, Bubble Sort and Selection Sort work**.
 
 
 ## To Run the Application
