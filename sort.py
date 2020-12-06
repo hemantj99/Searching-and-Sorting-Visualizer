@@ -59,14 +59,6 @@ def insertion_sort():
     global worker
     worker = _insertion_sort()
     animate()
-def merge_sort():     
-    global worker
-    worker = _merge_sort()
-    animate()
-def quick_sort():     
-    global worker
-    worker = _quick_sort()
-    animate()
 def selection_sort():     
     global worker
     worker = _selection_sort()
@@ -126,14 +118,10 @@ insert = tk.Button(window, text='Insertion Sort', command=insertion_sort)
 select = tk.Button(window, text='Selection Sort', command=selection_sort)
 bubble = tk.Button(window, text='Bubble Sort', command=bubble_sort)
 shuf = tk.Button(window, text='Shuffle', command=generate)
-merge = tk.Button(window, text='Merge Sort', command=generate)
-quick = tk.Button(window, text='Quick Sort', command=generate)
 
 insert.grid(column=1,row=1)
 select.grid(column=2,row=1)
 bubble.grid(column=3,row=1)
-merge.grid(column=4,row=1)
-quick.grid(column=5,row=1)
 shuf.grid(column=0, row=1)
 
 generate()
