@@ -1,13 +1,13 @@
-# SortingVisualizer
+# Searching and Sorting Visualizer
 
-This is a Simple GUI based python program to visualize common Sorting Algorithms Uses the tinkter Library in python
+A Python GUI based application to visualize common Searching and Sorting Algorithms Uses the tkinter Library in Python.
 
 - Created a new window using the Tk window object
 - Created a Canvas on the window and buttons with required commands
 - Randomized Data Generator function to add bars using canvas.create_rectangle() function
 - Swaps in the algorithms were animated using the window.after() function
 
-Currently **Insertion Sort, Bubble Sort and Selection Sort work**.
+Currently **Linear Search, Binary Search and sorting algorithms like Bubble Sort, Merge Sort, Selection Sort, Insertion Sort and Quick sort.**.
 
 
 ## To Run the Application
@@ -16,7 +16,8 @@ Currently **Insertion Sort, Bubble Sort and Selection Sort work**.
 - `cd SortingVisualizer`
 - `python sort.py`
 
-I hope you enjoy it!
+
+## I hope you enjoy it!
 
 
 
