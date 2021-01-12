@@ -12,10 +12,12 @@ from linearSearch import linear_search
 from binarySearch import binary_search
 
 root = Tk()
-root.title("Sorting Algorithm Visualizer")
+root.title("Sorting Algorithm Visulaiser")
 root.maxsize(1000,600)
+# background color
 root.config(bg="black")
 
+# variable
 selected_algo = StringVar()
 data = []
 
@@ -28,8 +30,10 @@ def drawData(data, colorArray):
     spacing = 10
     normalizedData = [ i / max(data) for i in data]
     for i, height in enumerate(normalizedData):
+        #top left
         x0 = i * x_width + offset + spacing
         y0 = c_height - height * 340
+        #bottom right
         x1 = (i + 1) * x_width + offset
         y1 = c_height
 
@@ -56,6 +60,7 @@ def Generate():
         size = 200
 
     data = []
+    # generating random list
     color=[]
     for _ in range (size):
         data.append(random.randrange(minVal, maxVal +1))
@@ -100,8 +105,8 @@ def StartAlgorithm():
         binary_search(data, search, drawData, speedScale.get())
 
 
-def about():
-    messagebox._show(title="About Me", _icon=None, message=" Name: Hemant Jain\n Email: hemantjain1999@gmail.com\n")
+def mabout():
+    messagebox._show(title="About Me", _icon=None, message=" Name: Hemant Jain\n Email: hemantjain1999@gmail.com\n ")
 
 UI_frame = Frame(root, width=600, height=200, bg='green')
 UI_frame.grid(row=0,column=0, padx=0 ,pady=5)
@@ -113,29 +118,36 @@ Label(UI_frame , text="Size of Data : " , bg='Green').grid(row=0, column=0, padx
 sizeEntry = Entry(UI_frame)
 sizeEntry.grid(row=0, column=1, padx=5, pady=5, sticky=W)
 
+# minimum value of data
 Label(UI_frame , text="Minimum Value: " , bg='Green').grid(row=0, column=2, padx=5, pady=5, sticky=W)
 minEntry = Entry(UI_frame)
 minEntry.grid(row=0, column=3, padx=5, pady=5, sticky=W)
 
+# maximum value of data
 Label(UI_frame , text="Maximum Value: " , bg='Green').grid(row=0, column=4, padx=5, pady=5, sticky=W)
 maxEntry = Entry(UI_frame)
 maxEntry.grid(row=0, column=5, padx=5, pady=5, sticky=W)
 
+# Generate button
 Button(UI_frame, text="Generate", command=Generate, bg='yellow').grid(row=0, column=6, padx=5, pady=5)
 
+# row[1]
 Label(UI_frame , text="Select Algorithm" , bg='Green').grid(row=1, column=0, padx=5, pady=5, sticky=W)
 
+# Drop down menu for algorithm selection
 algMenu=ttk.Combobox(UI_frame, textvariable=selected_algo, values=['Linear Search', 'Binary Search','Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Merge Sort', 'Quick Sort'])
 algMenu.grid(row=1, column=1, padx=5, pady=5)
 
 algMenu.current(0)
 
-# speed scale
-speedScale = Scale(UI_frame,_from=1, to=7, length=200, digits=2, resolution=1, orient=HORIZONTAL, label="Select Speed :", bg="sky blue")
+speedScale = Scale(UI_frame,from_=1, to=7, length=200, digits=2, resolution=1, orient=HORIZONTAL, label="Select Speed :", bg="sky blue")
 speedScale.grid(row=1, column=2, padx=5, pady=5)
-searchEntry = Scale(UI_frame, _from=1, to=100, resolution=1, orient=HORIZONTAL, label="Search Value")
+searchEntry = Scale(UI_frame, from_=1, to=100, resolution=1, orient=HORIZONTAL, label="Search Value")
 searchEntry.grid(row=1, column=3, padx=5, pady=5)
 # start button
 Button(UI_frame, text="Start", command=StartAlgorithm, bg='red').grid(row=1, column=4, padx=5, pady=5)
-Button(UI_frame, text="About Me", command=about, bg='red').grid(row=1, column=5, padx=5, pady=5)
+# About button
+Button(UI_frame, text="About Me", command=mabout, bg='red').grid(row=1, column=5, padx=5, pady=5)
+
+
 root.mainloop()
