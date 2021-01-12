@@ -1,128 +1,141 @@
-import tkinter as tk
+from tkinter import *
+from tkinter import messagebox
+from tkinter import ttk
 import random
+import time
+from bubblesort import bubble_sort
+from selectionsort import  selection_sort
+from insertionsort import insertion_sort
+from mergesort import merge_sort
+from quicksort import  quick_sort
+from linearSearch import linear_search
+from binarySearch import binary_search
 
-def swap(pos_0, pos_1):
-    bar11, _, bar12, _ = canvas.coords(pos_0)
-    bar21, _, bar22, _ = canvas.coords(pos_1)
-    canvas.move(pos_0, bar21-bar11, 0)
-    canvas.move(pos_1, bar12-bar22, 0)
+root = Tk()
+root.title("Sorting Algorithm Visualizer")
+root.maxsize(1000,600)
+root.config(bg="black")
 
-worker = None 
+selected_algo = StringVar()
+data = []
 
-def _insertion_sort():
-    global barList
-    global lengthList
+def drawData(data, colorArray):
+    canvas.delete("all")
+    c_height = 380
+    c_width = 600
+    x_width = c_width / (len(data) + 1)
+    offset = 30
+    spacing = 10
+    normalizedData = [ i / max(data) for i in data]
+    for i, height in enumerate(normalizedData):
+        x0 = i * x_width + offset + spacing
+        y0 = c_height - height * 340
+        x1 = (i + 1) * x_width + offset
+        y1 = c_height
 
-    for i in range(len(lengthList)):
-        cursor = lengthList[i]
-        cursorBar = barList[i]
-        pos = i
-
-        while pos > 0 and lengthList[pos - 1] > cursor:
-            lengthList[pos] = lengthList[pos - 1]
-            barList[pos], barList[pos - 1] = barList[pos - 1], barList[pos]
-            swap(barList[pos],barList[pos-1])   
-            yield                                      
-            pos -= 1                                   
-
-        lengthList[pos] = cursor
-        barList[pos] = cursorBar
-        swap(barList[pos],cursorBar)
-
-def _bubble_sort():
-    global barList
-    global lengthList
+        canvas.create_rectangle(x0, y0, x1, y1, fill=colorArray[i])
+        canvas.create_text(x0+2, y0, anchor=SW, text=str(data[i]))
     
-    for i in range(len(lengthList) - 1):
-        for j in range(len(lengthList) - i - 1):
-            if(lengthList[j] > lengthList[j + 1]):
-                lengthList[j] , lengthList[j + 1] = lengthList[j + 1] , lengthList[j]
-                barList[j], barList[j + 1] = barList[j + 1] , barList[j]
-                swap(barList[j + 1] , barList[j])
-                yield        
-           
-def _selection_sort():
-    global barList    
-    global lengthList
+    root.update_idletasks()
 
-    for i in range(len(lengthList)):
-        min = i
-        for j in range(i + 1 ,len(lengthList)):
-            if(lengthList[j] < lengthList[min]):
-                min = j
-        lengthList[min], lengthList[i] = lengthList[i] ,lengthList[min]
-        barList[min] , barList[i] = barList[i] , barList[min]
-        swap(barList[min] , barList[i])        
-        yield
+def Generate():
+    global data
+    try:
+        minVal = max(int(minEntry.get()),0)
+    except:
+        minVal = 3
+    try:
+        maxVal = min(int(maxEntry.get()),1000)
+    except:
+        maxVal = 1000
+    try:
+        size = min(200,int(sizeEntry.get()))
+        if size < 0:
+            size=200
+    except:
+        size = 200
 
-def insertion_sort():     
-    global worker
-    worker = _insertion_sort()
-    animate()
-def selection_sort():     
-    global worker
-    worker = _selection_sort()
-    animate()
+    data = []
+    color=[]
+    for _ in range (size):
+        data.append(random.randrange(minVal, maxVal +1))
+        color.append('sky blue')
 
-def bubble_sort():     
-    global worker
-    worker = _bubble_sort()
-    animate()    
+    drawData(data, color)
 
-def animate():      
-    global worker
-    if worker is not None:
-        try:
-            next(worker)
-            window.after(10, animate)    
-        except StopIteration:            
-            worker = None
-        finally:
-            window.after_cancel(animate) 
+def StartAlgorithm():
+    global data
+    speed=int(speedScale.get())
+    if speed==2:
+        speed=1.5
+    elif speed == 3:
+        speed = 0.1
+    elif speed == 4:
+        speed = 0.05
+    elif speed == 5:
+        speed = 0.01
+    elif speed == 6:
+        speed = 0.005
+    elif speed == 7:
+        speed = 0.001
 
-def generate():
-    global barList
-    global lengthList
-    canvas.delete('all')
-    barstart = 5
-    barend = 15
-    barList = []
-    lengthList = []
+    search = int(searchEntry.get())
+    if selected_algo.get() == "Bubble Sort" :
+        bubble_sort(data, drawData, speed)
+    elif selected_algo.get() == "Selection Sort" :
+        selection_sort(data, drawData, speed)
+    elif selected_algo.get() == "Insertion Sort" :
+        insertion_sort(data, drawData, speed)
+    elif selected_algo.get() == "Merge Sort" :
+        merge_sort(data, 0, len(data)-1, drawData, speed)
+        drawData(data, ['light green' for x in range(len(data))])
+        time.sleep(speed)
+    elif selected_algo.get() == "Quick Sort" :
+        quick_sort(data, drawData, speed)
+    elif algMenu.get() == 'Linear Search':
+        linear_search(data, search, drawData, speedScale.get())
+    elif algMenu.get() == 'Binary Search':
+        merge_sort(data, 0, len(data)-1, drawData, speed)
+        drawData(data, ['red' for x in range(len(data))])
+        binary_search(data, search, drawData, speedScale.get())
 
-    for bar in range(1, 60):
-        randomY = random.randint(1, 360)
-        bar = canvas.create_rectangle(barstart, randomY, barend, 365, fill='blue')
-        barList.append(bar)
-        barstart += 10
-        barend += 10
 
-    for bar in barList:
-        bar = canvas.coords(bar)
-        length = bar[3] - bar[1]
-        lengthList.append(length)
+def about():
+    messagebox._show(title="About Me", _icon=None, message=" Name: Hemant Jain\n Email: hemantjain1999@gmail.com\n")
 
-    for i in range(len(lengthList)-1):
-        if lengthList[i] == min(lengthList):
-            canvas.itemconfig(barList[i], fill='red')
-        elif lengthList[i] == max(lengthList):
-            canvas.itemconfig(barList[i], fill='black')
+UI_frame = Frame(root, width=600, height=200, bg='green')
+UI_frame.grid(row=0,column=0, padx=0 ,pady=5)
 
-window = tk.Tk()
-window.title('Sorting Visualizer')
-window.geometry('600x450')
+canvas = Canvas(root, width=800, height=380, bg='white')
+canvas.grid(row=1, column=0, padx=10, pady=5)
 
-canvas = tk.Canvas(window, width='600', height='400')
-canvas.grid(column=0,row=0, columnspan = 50)
+Label(UI_frame , text="Size of Data : " , bg='Green').grid(row=0, column=0, padx=5, pady=5, sticky=W)
+sizeEntry = Entry(UI_frame)
+sizeEntry.grid(row=0, column=1, padx=5, pady=5, sticky=W)
 
-insert = tk.Button(window, text='Insertion Sort', command=insertion_sort)
-select = tk.Button(window, text='Selection Sort', command=selection_sort)
-bubble = tk.Button(window, text='Bubble Sort', command=bubble_sort)
-shuf = tk.Button(window, text='Shuffle', command=generate)
+Label(UI_frame , text="Minimum Value: " , bg='Green').grid(row=0, column=2, padx=5, pady=5, sticky=W)
+minEntry = Entry(UI_frame)
+minEntry.grid(row=0, column=3, padx=5, pady=5, sticky=W)
 
-insert.grid(column=1,row=1)
-select.grid(column=2,row=1)
-bubble.grid(column=3,row=1)
-shuf.grid(column=0, row=1)
+Label(UI_frame , text="Maximum Value: " , bg='Green').grid(row=0, column=4, padx=5, pady=5, sticky=W)
+maxEntry = Entry(UI_frame)
+maxEntry.grid(row=0, column=5, padx=5, pady=5, sticky=W)
 
-generate()
-window.mainloop()
+Button(UI_frame, text="Generate", command=Generate, bg='yellow').grid(row=0, column=6, padx=5, pady=5)
+
+Label(UI_frame , text="Select Algorithm" , bg='Green').grid(row=1, column=0, padx=5, pady=5, sticky=W)
+
+algMenu=ttk.Combobox(UI_frame, textvariable=selected_algo, values=['Linear Search', 'Binary Search','Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Merge Sort', 'Quick Sort'])
+algMenu.grid(row=1, column=1, padx=5, pady=5)
+
+algMenu.current(0)
+
+# speed scale
+speedScale = Scale(UI_frame,_from=1, to=7, length=200, digits=2, resolution=1, orient=HORIZONTAL, label="Select Speed :", bg="sky blue")
+speedScale.grid(row=1, column=2, padx=5, pady=5)
+searchEntry = Scale(UI_frame, _from=1, to=100, resolution=1, orient=HORIZONTAL, label="Search Value")
+searchEntry.grid(row=1, column=3, padx=5, pady=5)
+# start button
+Button(UI_frame, text="Start", command=StartAlgorithm, bg='red').grid(row=1, column=4, padx=5, pady=5)
+Button(UI_frame, text="About Me", command=about, bg='red').grid(row=1, column=5, padx=5, pady=5)
+root.mainloop()
