@@ -12,8 +12,8 @@ Currently **Linear Search, Binary Search and sorting algorithms like Bubble Sort
 
 ## To Run the Application
 
-- Clone this repo: `git clone https://github.com/hemantj99/SortingVisualizer.git`
-- `cd SortingVisualizer`
+- Clone this repo: `git clone https://github.com/hemantj99/Searching-and-Sorting-Visualizer.git`
+- `cd Searching-and-Sorting-Visualizer`
 - `python sort.py`
 
 
